@@ -3,6 +3,9 @@
     <header class="jumbotron">
       <h3>{{content}}</h3>
     </header>
+    <div class="d-flex justify-content-center mb-3">
+      <img src="../assets/gifs/arcade.gif">
+    </div>
   </div>
 </template>
 

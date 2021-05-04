@@ -39,19 +39,19 @@ public class TestController {
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess() {
-		return "User Content. And here's the data to show that." + usernameGetter();
+		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
 	}
 
 	@GetMapping("/mod")
 	@PreAuthorize("hasRole('MODERATOR')")
 	public String moderatorAccess() {
-		return "Moderator Board.";
+		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
 	}
 
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
-		return "Admin Board.";
+		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
 	}
 
 	//Add a request, when absent, delete the user deal and if deal is null
@@ -92,6 +92,23 @@ public class TestController {
 					restTemplate.getForObject(
 					"https://www.gamerpower.com/api/giveaway?id=" + dealUsers.get(i).getDealId(),
 					Deal.class
+					)
+			);
+		}
+		return deals;
+	}
+
+	@RequestMapping("/allUserDeals")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	public ArrayList<Deal> getAllUserDeals(){
+		User user = getCurrentUser();
+		List<DealUser> dealUsers = dealUserService.getAllDealsOfUser(user);
+		ArrayList<Deal> deals = new ArrayList<>();
+		for (int i = 0; i < dealUsers.size(); i++){
+			deals.add(
+					restTemplate.getForObject(
+							"https://www.gamerpower.com/api/giveaway?id=" + dealUsers.get(i).getDealId(),
+							Deal.class
 					)
 			);
 		}
