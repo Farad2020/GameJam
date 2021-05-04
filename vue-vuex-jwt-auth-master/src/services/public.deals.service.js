@@ -2,6 +2,7 @@ import axios from 'axios';
 import authHeader from "@/services/auth-header";
 
 const API_URL = 'http://localhost:9000/giveaways/';
+const API_TEST_URL = 'http://localhost:9000/api/test/';
 
 class PublicDealsService {
     getDealById(id) {
@@ -38,7 +39,15 @@ class PublicDealsService {
     }
 
     linkUserAndDeal(giveawayId){
-        return axios.get('http://localhost:9000/api/test/linkGiveaway?' + `giveawayId=${giveawayId}`, { headers: authHeader() });
+        return axios.get(API_TEST_URL + 'linkGiveaway?' + `giveawayId=${giveawayId}`, { headers: authHeader() });
+    }
+
+    checkUserDeal(giveawayId){
+        return axios.get(API_TEST_URL + 'checkUserDeal?' + `giveawayId=${giveawayId}`, { headers: authHeader() });
+    }
+
+    getUserDeals(){
+        return axios.get(API_TEST_URL + 'userDeals', { headers: authHeader() });
     }
 }
 

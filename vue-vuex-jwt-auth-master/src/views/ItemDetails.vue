@@ -28,8 +28,8 @@
               <p class="item_det_text">
                 <span>{{deal.worth}}</span>
               </p>
-              <button class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in_not</button>
-              <button @click="saveGiveaway(deal.id)" class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in</button>
+              <button v-if="already_saved" @click="saveGiveaway(deal.id)" class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in_not</button>
+              <button v-if="!already_saved" @click="saveGiveaway(deal.id)" class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in</button>
             </div>
           </div>
         </div>
@@ -193,16 +193,19 @@ name: "ItemDetails",
   data() {
     return {
       deal: '',
-      main_id: ''
+      main_id: '',
+      already_saved: ''
     };
   },
   mounted() {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
+
     PublicDealsService.getDealById(this.$route.params.id).then(
         response => {
           this.deal = response.data;
+          this.loadGiveawayData(this.deal.id)
         },
         error => {
           this.deal =
@@ -211,6 +214,8 @@ name: "ItemDetails",
               error.toString();
         }
     );
+
+
   },
   computed: {
     currentUser() {
@@ -220,9 +225,33 @@ name: "ItemDetails",
   methods: {
     /* Change button state */
     saveGiveaway(giveawayId){
-      alert("pressed")
-      PublicDealsService.linkUserAndDeal(giveawayId).then()
+      PublicDealsService.linkUserAndDeal(giveawayId).then(
+          response => {
+            this.already_saved = response.data;
+          },
+          error => {
+            this.already_saved =
+                (error.response && error.response.data && error.response.data.message) ||
+                error.message ||
+                error.toString();
+          }
+      )
     },
+
+    loadGiveawayData(giveawayId){
+      PublicDealsService.checkUserDeal(giveawayId).then(
+          response => {
+            this.already_saved = response.data;
+          },
+          error => {
+            this.already_saved =
+                (error.response && error.response.data && error.response.data.message) ||
+                error.message ||
+                error.toString();
+          }
+      )
+    }
+
   }
 }
 </script>

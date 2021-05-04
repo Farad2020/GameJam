@@ -14,4 +14,6 @@ public interface DealUserService {
     void deleteDealUserById(Long id);
     void deleteDealUser(DealUser dealUser);
     List<DealUser> getAllDealUsers();
+    DealUser getIfExistsByUserAndId(User user, Long id);
+    void deleteDealUserByUserAndDealId(User user, Long id);
 }

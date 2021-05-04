@@ -44,4 +44,14 @@ public class DealUserServiceImpl implements DealUserService {
     public List<DealUser> getAllDealUsers() {
         return dealUserRepository.findAll();
     }
+
+    @Override
+    public DealUser getIfExistsByUserAndId(User user, Long id) {
+        return dealUserRepository.findAllByUserAndDealId(user, id);
+    }
+
+    @Override
+    public void deleteDealUserByUserAndDealId(User user, Long id) {
+        dealUserRepository.deleteByUserAndDealId(user, id);
+    }
 }

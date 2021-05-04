@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface DealUserRepository extends JpaRepository<DealUser, Long> {
     List<DealUser> findAllByUser(User user);
+    DealUser findAllByUserAndDealId(User user, Long id);
+    void deleteByUserAndDealId(User user, Long id);
+
 }

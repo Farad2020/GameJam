@@ -9,12 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Transactional
 @RequestMapping("/api/test")
 public class TestController {
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Autowired
 	UserRepository userRepository;
@@ -48,19 +57,45 @@ public class TestController {
 	//Add a request, when absent, delete the user deal and if deal is null
 	@RequestMapping("/linkGiveaway")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public Deal[] createUserDeal(
+	public boolean createUserDeal(
 			@RequestParam(defaultValue = "0") Long giveawayId
 	){
 		User user = getCurrentUser();
 		if(user != null && giveawayId != 0){
-//            Deal deal = restTemplate.getForObject(
-//                    "https://www.gamerpower.com/api/giveaway?id=" + giveawayId,
-//                    Deal.class
-//            );
-
-			dealUserService.addDealUser(new DealUser(null, giveawayId, user));
+			if(dealUserService.getIfExistsByUserAndId(user, giveawayId) == null){
+				dealUserService.addDealUser(new DealUser(null, giveawayId, user));
+			}else{
+				dealUserService.deleteDealUserByUserAndDealId(user, giveawayId);
+			}
 		}
-		return null;
+		return dealUserService.getIfExistsByUserAndId(user, giveawayId) == null;
+	}
+
+	@RequestMapping("/checkUserDeal")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public boolean checkUserDeal(
+			@RequestParam(defaultValue = "0") Long giveawayId
+	){
+		User user = getCurrentUser();
+		return dealUserService.getIfExistsByUserAndId(user, giveawayId) == null;
+	}
+
+	@RequestMapping("/userDeals")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public ArrayList<Deal> getUserDeals(
+	){
+		User user = getCurrentUser();
+		List<DealUser> dealUsers = dealUserService.getAllDealsOfUser(user);
+		ArrayList<Deal> deals = new ArrayList<>();
+		for (int i = 0; i < dealUsers.size(); i++){
+			deals.add(
+					restTemplate.getForObject(
+					"https://www.gamerpower.com/api/giveaway?id=" + dealUsers.get(i).getDealId(),
+					Deal.class
+					)
+			);
+		}
+		return deals;
 	}
 
 	private User getCurrentUser(){
