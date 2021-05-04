@@ -1,6 +1,11 @@
 package com.bezkoder.springjwt.controllers;
 
+import com.bezkoder.springjwt.models.User;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +23,7 @@ public class TestController {
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess() {
-		return "User Content. And here's the data to show that.";
+		return "User Content. And here's the data to show that. " + userDetails();
 	}
 
 	@GetMapping("/mod")
@@ -31,5 +36,14 @@ public class TestController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
 		return "Admin Board.";
+	}
+
+	private String userDetails(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(!(authentication instanceof AnonymousAuthenticationToken)){
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			return userDetails.getUsername();
+		}
+		return null;
 	}
 }

@@ -26,9 +26,6 @@ public class APIController {
                 "https://www.gamerpower.com/api/giveaway?id=" + giveawayId,
                 Deal.class
         );
-
-        System.out.println("By ID called");
-        System.out.println(deal.toString());
         return deal;
     }
 

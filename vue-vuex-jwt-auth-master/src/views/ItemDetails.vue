@@ -23,9 +23,14 @@
           </div>
           <div class="col">
             <!--          Part1-->
-            <p class="item_det_text">
-              <span>{{deal.worth}}</span>
-            </p>
+
+            <div class="d-flex justify-content-between">
+              <p class="item_det_text">
+                <span>{{deal.worth}}</span>
+              </p>
+              <button class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in_not</button>
+              <button class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in</button>
+            </div>
           </div>
         </div>
 
@@ -192,6 +197,9 @@ name: "ItemDetails",
     };
   },
   mounted() {
+    if (!this.currentUser) {
+      this.$router.push('/login');
+    }
     PublicDealsService.getDealById(this.$route.params.id).then(
         response => {
           this.deal = response.data;
@@ -203,6 +211,14 @@ name: "ItemDetails",
               error.toString();
         }
     );
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
+  methods: {
+
   }
 }
 </script>
