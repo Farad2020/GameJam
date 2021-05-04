@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface UserDealRepository extends JpaRepository<UserDeal, Long> {
     List<UserDeal> findAllByUser(User user);
-
-
 }
