@@ -1,18 +1,10 @@
 package com.bezkoder.springjwt.controllers;
 
 import com.bezkoder.springjwt.models.Deal;
-import com.bezkoder.springjwt.models.User;
-import com.bezkoder.springjwt.models.UserDeal;
-import com.bezkoder.springjwt.repository.UserDealRepository;
 import com.bezkoder.springjwt.repository.UserRepository;
-import com.bezkoder.springjwt.security.services.UserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,9 +23,6 @@ public class APIController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserDealService userDealService;
 
     @RequestMapping("/id/{giveawayId}")
     public Deal getDealById(@PathVariable("giveawayId") int giveawayId){
@@ -196,39 +185,5 @@ public class APIController {
         }
 
         return filteredDeals.toArray(new Deal[0]);
-    }
-
-
-    //Add a request, when absent, delete the user deal and if deal is null
-    @RequestMapping("/linkGiveaway")
-    public Deal[] createUserDeal(
-            @RequestParam(defaultValue = "0") Long giveawayId
-    ){
-        User user = getCurrentUser();
-        if(user != null && giveawayId != 0){
-            Deal deal = restTemplate.getForObject(
-                    "https://www.gamerpower.com/api/giveaway?id=" + giveawayId,
-                    Deal.class
-            );
-
-            userDealService.addUserDeal(new UserDeal(null, deal, user));
-        }
-        return new Deal[0];
-    }
-
-    private User getCurrentUser(){
-        if (userRepository.findByUsername(getCurrentUsername()).isPresent()){
-            return userRepository.findByUsername(getCurrentUsername()).get();
-        }
-        return null;
-    }
-
-    private String getCurrentUsername(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userDetails.getUsername();
-        }
-        return null;
     }
 }

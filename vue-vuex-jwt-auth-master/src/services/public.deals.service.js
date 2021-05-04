@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from "@/services/auth-header";
 
 const API_URL = 'http://localhost:9000/giveaways/';
 
@@ -34,6 +35,10 @@ class PublicDealsService {
 
     getTopDeals(number){
         return axios.get(API_URL + 'top?' + `number=${number}`);
+    }
+
+    linkUserAndDeal(giveawayId){
+        return axios.get('http://localhost:9000/api/test/linkGiveaway?' + `giveawayId=${giveawayId}`, { headers: authHeader() });
     }
 }
 

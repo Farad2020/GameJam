@@ -5,21 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Table(name = "users_deals")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDeal {
+public class DealUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Deal deal;
+    @Column(name="deal_id")
+    private Long dealId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

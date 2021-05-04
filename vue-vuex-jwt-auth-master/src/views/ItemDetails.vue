@@ -29,7 +29,7 @@
                 <span>{{deal.worth}}</span>
               </p>
               <button class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in_not</button>
-              <button class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in</button>
+              <button @click="saveGiveaway(deal.id)" class=" material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="turned_in_not">turned_in</button>
             </div>
           </div>
         </div>
@@ -218,7 +218,11 @@ name: "ItemDetails",
     }
   },
   methods: {
-
+    /* Change button state */
+    saveGiveaway(giveawayId){
+      alert("pressed")
+      PublicDealsService.linkUserAndDeal(giveawayId).then()
+    },
   }
 }
 </script>
