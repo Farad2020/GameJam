@@ -7,6 +7,7 @@
     <HomeSliderComponent/>
     <HomeMainGrid/>
     <HomeMainContent/>
+    <HomeAdditionalComponent/>
   </div>
 </template>
 
@@ -15,10 +16,11 @@ import UserService from '../services/user.service';
 import HomeMainContent from "@/components/home/HomeMainContent";
 import HomeMainGrid from "@/components/home/HomeMainGrid";
 import HomeSliderComponent from "@/components/home/HomeSliderComponent";
+import HomeAdditionalComponent from "@/components/home/HomeAdditionalComponent";
 
 export default {
   name: 'Home',
-  components: {HomeSliderComponent, HomeMainGrid, HomeMainContent},
+  components: {HomeAdditionalComponent, HomeSliderComponent, HomeMainGrid, HomeMainContent},
   data() {
     return {
       content: ''

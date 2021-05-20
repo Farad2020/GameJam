@@ -1,5 +1,11 @@
 <template>
+
   <div class="container">
+    <div class="pb-2">
+      <h3 class="m-0 text-black my_main_header">Types</h3>
+      <hr/>
+    </div>
+
     <nav class="nav justify-content-center">
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Games</button>
@@ -70,7 +76,7 @@ export default {
     },
   },
   mounted() {
-    PublicDealsService.getTopDealsByType("game", "popularity", 16).then(
+    PublicDealsService.getTopDealsByType("game", "popularity", 8).then(
         response => {
           this.games = response.data;
         },
@@ -82,7 +88,7 @@ export default {
         }
     );
 
-    PublicDealsService.getTopDealsByType("loot", "popularity", 16).then(
+    PublicDealsService.getTopDealsByType("loot", "popularity", 8).then(
         response => {
           this.loot = response.data;
         },

@@ -142,3 +142,12 @@ export default {
   color: #FCF7FF;
 }
 </style>
+
+<!--
+Registered Users:
+admin
+moder
+test
+---------------Password-------------------
+tester
+-->

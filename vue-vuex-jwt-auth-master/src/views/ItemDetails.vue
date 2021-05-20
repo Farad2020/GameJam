@@ -69,7 +69,7 @@
 
 
         <!--      Row 5-->
-        <div class="row"  v-if="deal.open_giveaway_url">
+        <div class="row"  v-if="deal.type">
           <div class="col-2">
             <!--          Part5-->
             <p class="item_det_text">
@@ -158,8 +158,6 @@
       <img class="w-100 my_sidebar_gif" src="../assets/gifs/sidebarRainCity.gif">
 <!--      Example Path:: ../assets/gifs/sidebarNightCity.gif-->
       <!--      Image source:: https://i.imgur.com/CgKDPlb.gif-->
-      <img class="w-100 my_sidebar_gif invisible" src="">
-      <img class="w-100 my_sidebar_gif invisible" src="">
 <!--
 1
 https://i.pinimg.com/originals/5d/b9/dc/5db9dc7065e87d1c7075c365a17dbc2c.gif

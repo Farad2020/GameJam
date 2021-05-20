@@ -26,6 +26,10 @@ class PublicDealsService {
         return axios.get(API_URL + 'params' + `?type=${type}&sort_by=${sort_by}&number=${number}`);
     }
 
+    getTopDealsByPlatform(platform, sort_by, number) {
+        return axios.get(API_URL + 'params' + `?platform=${platform}&number=${number}&sort_by=${sort_by}`);
+    }
+
     getAllDeals() {
         return axios.get(API_URL + 'all');
     }
