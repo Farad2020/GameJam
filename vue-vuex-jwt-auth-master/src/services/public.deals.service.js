@@ -11,7 +11,10 @@ class PublicDealsService {
 
     getDealBySearch(search_text){
         return axios.get(API_URL + 'search?text=' + search_text);
+    }
 
+    getDealBySearchWithParams(search_text, type, platform){
+        return axios.get(API_URL + 'search?text=' + search_text + `&platform=${platform}&type=${type}`);
     }
 
     getDealsByPlatform(platform) {

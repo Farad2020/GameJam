@@ -4,9 +4,30 @@
       <form class="form-inline w-100 my_searchbar">
         <input
             v-model="search_text"
-            @input="searchItems(search_text)"
+            @input="searchItems(search_text, type_sort, platform_sort)"
             class="form-control mr-sm-2 w-100 "
             type="search" placeholder="Type Something, To Find Something..." aria-label="Search">
+
+        <div class="d-flex justify-content-between mr-sm-2 w-100 mt-3">
+          <select v-model="type_sort"
+                  @change="searchItems(search_text, type_sort, platform_sort)"
+                  class="form-select mr-sm-2">
+            <option selected value="empty">No Type Sorting</option>
+            <option value="game">Game</option>
+            <option value="loot">Loot</option>
+          </select>
+
+          <select v-model="platform_sort"
+                  @change="searchItems(search_text, type_sort, platform_sort)"
+                  class="form-select">
+            <option selected value="empty">No Platform Sorting</option>
+            <option value="pc">PC</option>
+            <option value="ps4">PlayStation 4</option>
+            <option value="switch">Nintendo Switch</option>
+            <option value="xbox-one">XBox One</option>
+          </select>
+        </div>
+
       </form>
     </div>
 
@@ -57,7 +78,9 @@ export default {
       search_text: "",
       searching: false,
       search_failed: false,
-      content: ''
+      content: '',
+      type_sort: 'empty',
+      platform_sort: 'empty',
     }
   },
   methods: {
@@ -66,11 +89,11 @@ export default {
       this.$router.push("/item/" + id)
     },
 
-    searchItems(search_text){
+    searchItems(search_text, type_sort, platform_sort){
       this.search_failed = true;
       this.searching = true;
 
-      PublicDealsService.getDealBySearch(search_text).then(
+      PublicDealsService.getDealBySearchWithParams(search_text, type_sort, platform_sort).then(
           response => {
             this.content = response.data;
             this.searching = false;

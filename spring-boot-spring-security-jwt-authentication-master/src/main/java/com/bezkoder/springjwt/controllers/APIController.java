@@ -154,20 +154,56 @@ public class APIController {
         return deals;
     }
 
+//    @RequestMapping("/search")
+//    public Deal[] getDealsBySearch(
+//            @RequestParam(defaultValue = "empty") String text
+//    ){
+//        if(text != null && !text.isEmpty()){
+//            ResponseEntity<Deal[]> responseEntity = restTemplate.getForEntity(
+//                    "https://www.gamerpower.com/api/giveaways",
+//                    Deal[].class
+//            );
+//
+//            Deal[] deals = responseEntity.getBody();
+//
+//            return filterDealsByName(deals, text);
+//        }
+//        return new Deal[0];
+//    }
+
     @RequestMapping("/search")
-    public Deal[] getDealsBySearch(
-            @RequestParam(defaultValue = "empty") String text
+    public Deal[] getDealsBySearchWithParams(
+            @RequestParam(defaultValue = "empty") String text,
+            @RequestParam(defaultValue = "empty") String platform,
+            @RequestParam(defaultValue = "empty")  String type
     ){
-        if(text != null && !text.isEmpty()){
-            ResponseEntity<Deal[]> responseEntity = restTemplate.getForEntity(
-                    "https://www.gamerpower.com/api/giveaways",
-                    Deal[].class
-            );
-
-            Deal[] deals = responseEntity.getBody();
-
-            return filterDealsByName(deals, text);
+        String reqParams = "";
+        if(!platform.equals("empty")){
+            reqParams+= "?platform=" + platform;
         }
+
+        if(!type.equals("empty")){
+            if(reqParams.isEmpty()){
+                reqParams+= "?type=" + type;
+            }else{
+                reqParams+= "&type=" + type;
+            }
+        }
+        try{
+            if(text != null && !text.isEmpty()){
+                ResponseEntity<Deal[]> responseEntity = restTemplate.getForEntity(
+                        "https://www.gamerpower.com/api/giveaways" + reqParams,
+                        Deal[].class
+                );
+
+                Deal[] deals = responseEntity.getBody();
+
+                return filterDealsByName(deals, text);
+            }
+        }catch (Exception e){
+
+        }
+        
         return new Deal[0];
     }
 
