@@ -39,19 +39,19 @@ public class TestController {
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess() {
-		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
+		return "Welcome to My GameJam, dear User, in this site, you can track various giveaways, which can be sorted in various systems";
 	}
 
 	@GetMapping("/mod")
 	@PreAuthorize("hasRole('MODERATOR')")
 	public String moderatorAccess() {
-		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
+		return "Since this website is fully automated, you don't have any necessity to have extra functionality";
 	}
 
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
-		return "Currently this page can be considered under construction, since it's necessity is not that significant.";
+		return "Since this website is fully automated, you don't have any extra functionality";
 	}
 
 	//Add a request, when absent, delete the user deal and if deal is null
